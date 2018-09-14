@@ -1,0 +1,26 @@
+language: c
+sudo: false
+notifications:
+  on_success: always
+  on_failure: always
+  use_notice: false
+  skip_join: false
+
+fast_finish: true
+
+addons:
+  apt:
+    packages:
+      - mlton
+
+install:
+ - apt search mlton # mlton does not have a way of printing version.
+
+script:
+  - echo pending build script.
+
+after_success:
+  - echo "All is well."
+
+after_failure:
+  - echo "Build failed."
