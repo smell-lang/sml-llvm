@@ -9,10 +9,10 @@ This is a Standard ML library to work with the LLVM compiler infrastructure.
 These instruction below will help you to use this library.
 
 # Author
-..* Piyush Kurur 
+* Piyush Kurur 
 
 # Contributor
-..* Rahul Dhawan
+* Rahul Dhawan
 
 [travis-status]: <https://travis-ci.org/smell-lang/sml-llvm.svg> "Build Status"
 [travis]: <https://travis-ci.org/smell-lang/sml-llvm> "Build Status"
