@@ -59,12 +59,12 @@ structure ast = struct
 
         (* used for capturing the floating point *)
 
-        datatype FloatingPointType = HalfFP      (* 16-bit floating point value *)
-                                   | FloatFP     (* 32-bit floating point value *)
+        datatype FloatingPointType = HalfFP       (* 16-bit floating point value *)
+                                   | FloatFP      (* 32-bit floating point value *)
                                    | DoubleFP    (* 64-bit floating point value *)
-                                   | FP128FP     (* 128-bit floating point value (112-bit mantissa) *)
-                                   | X86_FP80FP  (* 80-bit floating point value (X87) *)
-                                   | PPC_FP128FP (* 128-bit floating point value (two 64-bits) *)
+                                   | FP128FP      (* 128-bit floating point value (112-bit mantissa) *)
+                                   | X86_FP80FP   (* 80-bit floating point value (X87) *)
+                                   | PPC_FP128FP  (* 128-bit floating point value (two 64-bits) *)
 
         (* types used in llvm *)
 

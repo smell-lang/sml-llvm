@@ -10,20 +10,22 @@ structure convert:prettyPrinting = struct
 
 	fun get_name (ast.Name x) = x;
 
+	fun get_float_type x = case x of
+				ast.HalfFP      => "half" 
+			   |ast.FloatFP     => "float"
+			   |ast.DoubleFP    => "double"
+			   |ast.FP128FP     => "fp128"
+			   |ast.X86_FP80FP  => "x86_fp80"
+			   |ast.PPC_FP128FP => "ppc_fp128";
+
 	fun get_type x = case x of
-			  (ast.IntegerType y)  => "i" ^ IntInf.toString(y)
-			 |(ast.FloatingType ast.HalfFP)      => "f16"
-	   		 |(ast.FloatingType ast.FloatFP)     => "f32"
-	   		 |(ast.FloatingType ast.DoubleFP)    => "f64"
-	   		 |(ast.FloatingType ast.FP128FP)     => "f128"
-	   		 |(ast.FloatingType ast.X86_FP80FP)  => "f80"
-	   		 |(ast.FloatingType ast.PPC_FP128FP) => "f128";
+			  (ast.VoidType)       => "void"
+			 |(ast.IntegerType y)  => "i" ^ IntInf.toString(y)
+			 |(ast.FloatingType x) => get_float_type(x)
+			 |_                    => "";
 
-	fun get_value (SOME (ast.Int x)) = x;
-
-	fun get_returnType x = case x of
-	 					ast.VoidType                 => "void"
-	                   |ast.IntegerType y            => "i" ^ IntInf.toString(y);
+	fun get_value (SOME (ast.Int x))   = IntInf.toString(x)
+	   |get_value (SOME (ast.Float x)) = Real.toString(x); 
 	                   
 	fun get_visibility x = case x of
 	                    ast.Default => "@"
@@ -38,11 +40,16 @@ structure convert:prettyPrinting = struct
 
 	fun get_para (x,y) = case y of 
 						false => ""
-					   |true  =>  get_para_helper(x);
+					   |true  => get_para_helper(x);
 
 	fun get_bb_name (ast.Name x) = [x ^ ":"];
 
-	fun get_terminator (ast.Do x) = [];
+	fun get_terminator_value NONE = []
+	   |get_terminator_value (SOME x) = case x of
+	   								 (ast.LocalReference (x,y))  => ["ret " ^ get_type(x) ^ " " ^ get_name(y)]
+	   								|(ast.GlobalReference (x,y)) => [get_type(x) ^ get_name(y)];
+
+	fun get_terminator (ast.Do (ast.Ret x)) = get_terminator_value(#returnOperand(x));
 
 	fun get_values (ast.LocalReference (x,ast.Name y)) = y;  
 
@@ -50,7 +57,12 @@ structure convert:prettyPrinting = struct
 										ast.IntegerType 32 => "i32"
 									   |_                  => "";
 
-	fun get_decode_inst (ast.Add x) = "add " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x));
+	fun get_decode_inst x = case x of
+								(ast.Add x)   => "add " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.Sub x)  => "sub " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.Mul x)  => "mul " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.UDiv x) => "udiv " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|_            => "";
 
 	fun get_inst (ast.Named (x,y)) = [ x ^ " = " ^ get_decode_inst(y)];
 
@@ -64,8 +76,8 @@ structure convert:prettyPrinting = struct
 	   |get_bb (x::xs) = (get_block x) @ (get_bb xs);
 
 
-	fun conv_global (ast.GlobalVariable x) = ["@" ^ get_name(#name(x)) ^ " = global " ^ get_type(#types(x)) ^ " " ^ IntInf.toString(get_value(#initlizer(x))) ^ " "]
-	   |conv_global (ast.Function x)       = ["define " ^ get_returnType(#returnType(x)) ^ " " ^ get_visibility(#visibility(x)) ^ get_name(#name(x)) ^ "(" ^ get_para(#parameters(x)) ^ ") {"] @ get_bb(#basicblock(x)) @ ["}"] 
+	fun conv_global (ast.GlobalVariable x) = ["@" ^ get_name(#name(x)) ^ " = global " ^ get_type(#types(x)) ^ " " ^ (get_value(#initlizer(x))) ^ " "]
+	   |conv_global (ast.Function x)       = ["define " ^ get_type(#returnType(x)) ^ " " ^ get_visibility(#visibility(x)) ^ get_name(#name(x)) ^ "(" ^ get_para(#parameters(x)) ^ ") {"] @ get_bb(#basicblock(x)) @ ["}"] 
 	   |conv_global _                      = [""];
 
 	fun conv_def [] = []
