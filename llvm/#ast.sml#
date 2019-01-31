@@ -24,7 +24,7 @@ structure ast = struct
         (* Named can be used for using instructions as name *)
         (* It just refrenced the instruction a by the name or just do it if that instruction is not usefull to  refrence *)
 
-        datatype 'a Named = Named of string * 'a (* Reference it by some name *)
+        datatype 'a Named = Named of Name  (* Reference it by some name *)
                           | Do of 'a (* Just execute it without reference it by some name *)
                       
         (* constants *)
@@ -1272,7 +1272,7 @@ structure ast = struct
                 name : Name,
                 linkage : Linkage,
                 visibility : Visibility,
-                unnamedadr : UnnamedAddr option, 
+                unnamedadr : UnnamedAddr, 
                 adrspace : AddrSpace,
                 stoageclass : StorageClass option,
                 localmode : Model option,
@@ -1339,4 +1339,4 @@ structure ast = struct
                 moduleDefination : Defination list 
           }
 
-end;
+end
