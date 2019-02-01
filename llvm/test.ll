@@ -2,6 +2,11 @@
 @second = global fp128 8.9 
 define half @add_two_integer(i32 a , i32 b) {
 entry:
-%sum = udiv i32 %a %b
-ret i32 sum
+%sum = sub i32 %a i32 %b
+%cmp = ICmp ult i32 %a i32 %b
+%ifcond = ICmp ne i32 %a i32 %b
+br i32 b label cond label cond
+cond:
+%sum = mul i32 %a i32 %b
+ret half sum
 }

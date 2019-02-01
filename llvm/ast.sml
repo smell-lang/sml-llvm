@@ -869,10 +869,10 @@ structure ast = struct
                                         | ORD
                                         | UNO
                                         | UEQ
-                                        | UGT
-                                        | UGE
-                                        | ULT
-                                        | ULE
+                                        | Ugt
+                                        | Uge
+                                        | Ult
+                                        | Ule
                                         | UNE
                                         | True
                                         

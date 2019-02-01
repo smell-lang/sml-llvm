@@ -44,24 +44,43 @@ structure convert:prettyPrinting = struct
 
 	fun get_bb_name (ast.Name x) = [x ^ ":"];
 
-	fun get_terminator_value NONE = []
+	fun get_terminator_value NONE = ""
 	   |get_terminator_value (SOME x) = case x of
-	   								 (ast.LocalReference (x,y))  => ["ret " ^ get_type(x) ^ " " ^ get_name(y)]
-	   								|(ast.GlobalReference (x,y)) => [get_type(x) ^ get_name(y)];
+	   								 (ast.LocalReference (x,y))  => get_type(x) ^ " " ^ get_name(y)
+	   								|(ast.GlobalReference (x,y)) => get_type(x) ^ get_name(y);
 
-	fun get_terminator (ast.Do (ast.Ret x)) = get_terminator_value(#returnOperand(x));
+	fun get_termin_val x = case x of
+							 (ast.LocalReference (x,y))  => get_type(x) ^ " " ^ get_name(y)
+							|(ast.GlobalReference (x,y)) => get_type(x) ^ " " ^ get_name(y);
+
+	fun get_terminator (ast.Do x) = case x of
+									 (ast.Ret y)    => ["ret " ^ get_terminator_value(#returnOperand(y))]
+									|(ast.Br y)     => ["br label " ^ get_name(#dest(y))]
+									|(ast.CondBr y) => ["br " ^ get_termin_val(#condition(y)) ^ " " ^ "label " ^ get_name(#trueDest(y)) ^ " label " ^ get_name(#falseDest(y))]  
+									|_            => [];  
 
 	fun get_values (ast.LocalReference (x,ast.Name y)) = y;  
 
-	fun get_ret_type (ast.LocalReference (x,_)) = case x of
-										ast.IntegerType 32 => "i32"
-									   |_                  => "";
+	fun get_ret_type (ast.LocalReference (x,_)) = get_type(x);
+
+	fun get_pred (x : ast.IntegerPredicate) = case x of
+									 ast.EQ  => "eq"
+					                |ast.NE  => "ne"
+					                |ast.UGT => "ugt"
+					                |ast.UGE => "uge"
+					                |ast.ULT => "ult"
+					                |ast.ULE => "ule"
+					                |ast.SGT => "sgt"
+					                |ast.SGE => "sge"
+					                |ast.SLT => "slt"
+					                |ast.SLE => "sle";
 
 	fun get_decode_inst x = case x of
-								(ast.Add x)   => "add " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
-								|(ast.Sub x)  => "sub " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
-								|(ast.Mul x)  => "mul " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
-								|(ast.UDiv x) => "udiv " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								(ast.Add x)   => "add " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ get_ret_type(#operand1(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.Sub x)  => "sub " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ get_ret_type(#operand1(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.Mul x)  => "mul " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ get_ret_type(#operand1(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.UDiv x) => "udiv " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ get_ret_type(#operand1(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
+								|(ast.ICmp x) => "ICmp " ^ get_pred(#iPredicate(x)) ^ " " ^ get_ret_type(#operand0(x)) ^ " " ^ "%" ^ get_values(#operand0(x)) ^ " " ^ get_ret_type(#operand1(x)) ^ " " ^ "%" ^ get_values(#operand1(x))
 								|_            => "";
 
 	fun get_inst (ast.Named (x,y)) = [ x ^ " = " ^ get_decode_inst(y)];

@@ -2,7 +2,10 @@ use "ast.sml";
 
 val outputFile = "test.ll";
 
-val defaultBasicblock = ast.BasicBlock (ast.Name "entry" , [ (ast.Named ("%sum" , ast.UDiv { exact = true, operand0 = ast.LocalReference (ast.IntegerType 32, ast.Name "a") , operand1 = ast.LocalReference (ast.IntegerType 32, ast.Name "b") , metadata = ast.InstructionMetadata nil } ) ) ] , ast.Do (ast.Ret { returnOperand = SOME (ast.LocalReference (ast.IntegerType 32, ast.Name "sum") ), metadata = ast.InstructionMetadata nil } ) ); 
+val defaultBasicblock0 = ast.BasicBlock (ast.Name "entry" , [ (ast.Named ("%sum" , ast.Sub { nsw = true, nuw = true, operand0 = ast.LocalReference (ast.IntegerType 32, ast.Name "a") , operand1 = ast.LocalReference (ast.IntegerType 32, ast.Name "b") , metadata = ast.InstructionMetadata nil } ) ) , (ast.Named ("%cmp" , ast.ICmp { iPredicate = ast.ULT, operand0 = ast.LocalReference (ast.IntegerType 32, ast.Name "a") , operand1 = ast.LocalReference (ast.IntegerType 32, ast.Name "b") , metadata = ast.InstructionMetadata nil } ) ) , (ast.Named ("%ifcond" , ast.ICmp { iPredicate = ast.NE, operand0 = ast.LocalReference (ast.IntegerType 32, ast.Name "a") , operand1 = ast.LocalReference (ast.IntegerType 32, ast.Name "b") , metadata = ast.InstructionMetadata nil } ) )] , ast.Do (ast.CondBr { condition = ast.LocalReference (ast.IntegerType 32, ast.Name "b") ,trueDest = ast.Name "cond", falseDest = ast.Name "cond", metadata = ast.InstructionMetadata nil } ) ); 
+
+val defaultBasicblock1 = ast.BasicBlock (ast.Name "cond" , [ (ast.Named ("%sum" , ast.Mul { nsw = true, nuw = true, operand0 = ast.LocalReference (ast.IntegerType 32, ast.Name "a") , operand1 = ast.LocalReference (ast.IntegerType 32, ast.Name "b") , metadata = ast.InstructionMetadata nil } ) ) ] , ast.Do (ast.Ret { returnOperand = SOME (ast.LocalReference (ast.FloatingType (ast.HalfFP), ast.Name "sum") ), metadata = ast.InstructionMetadata nil } ) ); 
+
 
 val defaultFunction = ast.Function {linkage = ast.Private, 
                  visibility = ast.Default,
@@ -18,7 +21,7 @@ val defaultFunction = ast.Function {linkage = ast.Private,
                  allignment = 0,
                  garbagecollectorName = NONE,
                  prefix = NONE,
-                 basicblock = [defaultBasicblock],
+                 basicblock = [defaultBasicblock0 , defaultBasicblock1],
                  personalityFunction = NONE,
                  metadata = nil };
 
