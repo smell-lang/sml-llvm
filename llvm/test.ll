@@ -5,7 +5,8 @@ entry:
 %sum = sub i32 %a i32 %b
 %cmp = ICmp ult i32 %a i32 %b
 %ifcond = ICmp ne i32 %a i32 %b
-br i32 b label cond label cond
+%phic = phi i32 [%i32 , %entry] , [%i32 , %loop]
+br i32 b label %cond label %cond
 cond:
 %sum = mul i32 %a i32 %b
 ret half sum
