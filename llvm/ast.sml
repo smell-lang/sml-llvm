@@ -142,9 +142,9 @@ structure ast = struct
         
         datatype DIFile = File of 
           {
-              filename : string, 
-              directory : string, 
-              checksuminfo : ChecksumInfo 
+                filename : string, 
+                directory : string, 
+                checksuminfo : ChecksumInfo 
           }
           
         (* tag type *)  
@@ -176,61 +176,61 @@ structure ast = struct
         (* Acessibility flag *)
         
         datatype DIAccessibility = Private
-                                | Protected
-                                | Public
+                                 | Protected
+                                 | Public
                                 
         (*  *)
         
         datatype DIModule = DIModules of
           {
-                 scope : (DIScope MDRef) option,
-                 name : string,
-                 configurationMacros : string,
-                 includePath : string,
-                 isysRoot : string
+                scope : (DIScope MDRef) option,
+                name : string,
+                configurationMacros : string,
+                includePath : string,
+                isysRoot : string
           }
                                 
         (* Inheritance flag *)
         
         and DIInheritance = SingleInheritance
-                               | MultipleInheritance
-                               | VirtualInheritance
+                          | MultipleInheritance
+                          | VirtualInheritance
           
         (* flaf types *)
         
         and DIFlag = Accessibility of DIAccessibility
-                        | FwdDecl
-                        | AppleBlock
-                        | BlockByrefStruct
-                        | VirtualFlag
-                        | Artificial
-                        | Explicit
-                        | Prototyped
-                        | ObjcClassComplete
-                        | ObjectPointer
-                        | Vector
-                        | StaticMember
-                        | LValueReference
-                        | RValueReference
-                        | InheritanceFlag of DIInheritance
-                        | IntroducedVirtual
-                        | BitField
-                        | NoReturn
-                        | MainSubprogram
+                   | FwdDecl
+                   | AppleBlock
+                   | BlockByrefStruct
+                   | VirtualFlag
+                   | Artificial
+                   | Explicit
+                   | Prototyped
+                   | ObjcClassComplete
+                   | ObjectPointer
+                   | Vector
+                   | StaticMember
+                   | LValueReference
+                   | RValueReference
+                   | InheritanceFlag of DIInheritance
+                   | IntroducedVirtual
+                   | BitField
+                   | NoReturn
+                   | MainSubprogram
                        
         and DerivedTypeTag = Typedef
-                                | PointerType
-                                | PtrToMemberType
-                                | ReferenceType
-                                | RValueReferenceType
-                                | ConstType
-                                | VolatileType
-                                | RestrictType
-                                | AtomicType
-                                | Member
-                                | Inheritance
-                                | Friend   
-                              
+                           | PointerType
+                           | PtrToMemberType
+                           | ReferenceType
+                           | RValueReferenceType
+                           | ConstType
+                           | VolatileType
+                           | RestrictType
+                           | AtomicType
+                           | Member
+                           | Inheritance
+                           | Friend   
+                            
         (*  *)
         
         and DISubroutineType = SubroutineType of
@@ -273,12 +273,12 @@ structure ast = struct
         (* DIvariable *)
         
         and DIVariable = DIGlobalVariable of DIGlobalVariable
-                            | DILocalVariable of DILocalVariable
+                       | DILocalVariable of DILocalVariable
           
         (*  *)
           
         and DICount = DICountConstant of IntInf.int (* int64 *)
-                         | DICountVariable of (DIVariable MDRef)
+                    | DICountVariable of (DIVariable MDRef)
         
         (*  *)
         
@@ -374,27 +374,27 @@ structure ast = struct
         
         and DISubprogram = Subprogram of
           {
-                 scope : (DIScope MDRef) option,
-                 name : string,
-                 linkageName : string,
-                 file : (DIFile MDRef) option,
-                 line : int,
-                 types : (DISubroutineType MDRef) option,
-                 localToUnit : bool,
-                 definition : bool,
-                 scopeLine : int,
-                 containingType : (DIType MDRef) option,
-                 virtuality : Virtuality,
-                 virtualityIndex : int,
-                 thisAdjustment : int,
-                 flags : DIFlag list,
-                 optimized : bool,
-                 units : (DICompileUnit MDRef) option,
-                 templateParams : (DITemplateParameter MDRef) list,
-                 declaration : (DISubprogram MDRef) option,
-                 retainedNodes : (DILocalVariable MDRef) list,
-                 thrownTypes : (DIType MDRef) list
-         }
+                scope : (DIScope MDRef) option,
+                name : string,
+                linkageName : string,
+                file : (DIFile MDRef) option,
+                line : int,
+                types : (DISubroutineType MDRef) option,
+                localToUnit : bool,
+                definition : bool,
+                scopeLine : int,
+                containingType : (DIType MDRef) option,
+                virtuality : Virtuality,
+                virtualityIndex : int,
+                thisAdjustment : int,
+                flags : DIFlag list,
+                optimized : bool,
+                units : (DICompileUnit MDRef) option,
+                templateParams : (DITemplateParameter MDRef) list,
+                declaration : (DISubprogram MDRef) option,
+                retainedNodes : (DILocalVariable MDRef) list,
+                thrownTypes : (DIType MDRef) list
+          }
         
         (* localscope *)
         
@@ -424,7 +424,7 @@ structure ast = struct
         (* Information about the macro *)
         
         and DIMacroInfo = Define
-                             | Undef
+                        | Undef
           
         (* macronode datatype *)
         
@@ -435,7 +435,7 @@ structure ast = struct
                 name : string,
                 value : string     
           }
-                             | DIMacroFile of
+                        | DIMacroFile of
           {
                 line : IntInf.int,
                 file : DIFile MDRef,
@@ -446,22 +446,22 @@ structure ast = struct
          
         and DWOpFragment = DWOPLLVMFragment of
           { 
-                 offset : IntInf.int,
-                 size : IntInf.int
+                offset : IntInf.int,
+                size : IntInf.int
           }
         
         (*  *)
         
         and DWOp = DwOpFragment of DWOpFragment 
-                      | DW_OP_StackValue 
-                      | DW_OP_Swap
-                      | DW_OP_ConstU of IntInf.int (* word 64 *)
-                      | DW_OP_PlusUConst of IntInf.int
-                      | DW_OP_Plus
-                      | DW_OP_Minus
-                      | DW_OP_Mul
-                      | DW_OP_Deref
-                      | DW_OP_XDeref
+                 | DW_OP_StackValue 
+                 | DW_OP_Swap
+                 | DW_OP_ConstU of IntInf.int (* word 64 *)
+                 | DW_OP_PlusUConst of IntInf.int
+                 | DW_OP_Plus
+                 | DW_OP_Minus
+                 | DW_OP_Mul
+                 | DW_OP_Deref
+                 | DW_OP_XDeref
         
         (*  *)
                         
@@ -528,18 +528,18 @@ structure ast = struct
         (* Type of the MDNode *)
         
         and MDNode = MDTuple of Metadata option list  
-                        | DIExpression of DIExpression
-                        | DIGlobalVariableExpression of DIGlobalVariableExpression
-                        | DILocation of DILocation
-                        | DIMacroNode of DIMacroNode
-                        | DINode of DINode
+                   | DIExpression of DIExpression
+                   | DIGlobalVariableExpression of DIGlobalVariableExpression
+                   | DILocation of DILocation
+                   | DIMacroNode of DIMacroNode
+                   | DINode of DINode
 
         
         (* metadata datatype to capture the metadata *)
         
         and Metadata = MDString of string
-                          | MDValue of Operand
-                          | MDNode of MDNode MDRef
+                     | MDValue of Operand
+                     | MDNode of MDNode MDRef
 
 
         (* for capturing the Metadata operand *)
@@ -712,10 +712,10 @@ structure ast = struct
                                    | SafeStack
                                    | AllocSize of (IntInf.int * (IntInf.int option))
                                    | StringAttribute of
-             {
+          {
                 stringAttributeKind : string,
                 stringAttributeValue : string
-             }
+          }
                                                            
         (* GroupID for capturing the ID for the group *)
         
@@ -733,51 +733,51 @@ structure ast = struct
         (* A representation of an LLVM inline assembly *)
         
         datatype InlineAssembly = InlineAssembly of 
-           {
+          {
                 types : Type,
                 assembly : string,
                 constraints : string,
                 hasSideEffects : bool,
                 alignStack : bool,
                 dialect : Dialect
-           }
+          }
            
         type CallableOperand  = (InlineAssembly , Operand) either
         
         (* Terminator for capturing the terminator of the node *)
         
         datatype Terminator = Ret of 
-           {    
+          {    
                 returnOperand : Operand option,
                 metadata : InstructionMetadata
-           } 
+          } 
                             | CondBr of
-           {
+          {
                 condition : Operand,
                 trueDest : Name,
                 falseDest : Name,
                 metadata : InstructionMetadata
-           }
+          }
                             | Br of
-           {
+          {
                 dest : Name,
                 metadata : InstructionMetadata
-           }
+          }
                             | Switch of
-           {
+          {
                 operand : Operand,
                 defaultDest : Name,
                 dests : ((Constant * Name) list),
                 metadata : InstructionMetadata
-           }
+          }
                            | IndirectBr of 
-           {
+          {
                 operand : Operand,
                 possibleDests : Name list,
                 metadata : InstructionMetadata
-           }
+          }
                            | Invoke of
-           {
+          {
                 callingConvention : CallingConvention,
                 returnAttributes : ParameterAttribute list,
                 function : CallableOperand,
@@ -786,35 +786,35 @@ structure ast = struct
                 returnDest : Name,
                 exceptionDest : Name,
                 metadata : InstructionMetadata
-           }
+          }
                           | Resume of
-           {
+          {
                 operand : Operand,
                 metadata : InstructionMetadata
-           }
+          }
                           | Unreachable of
-           {
+          {
                 metadata : InstructionMetadata
-           }
+          }
                           | CleanupRet of
-           {
+          {
                 cleanupPad : Operand,
                 unwindDest : Name option,
                 metadata : InstructionMetadata
-           }
+          }
                           | CatchRet of
-           {
+          {
                 catchPad : Operand,
                 successor : Name,
                 metadata : InstructionMetadata
-           }
+          }
                           | CatchSwitch of 
-           {
+          {
                 parentPad : Operand,
                 catchHandlers : Name list, (* ask sir about the non empty list *)
                 defaultUnwindDest : Name option,
                 metadata : InstructionMetadata
-           }
+          }
         
         (*  call may use the following flags to enable otherwise unsafe floating-point transformations. *)
         (* http://llvm.org/docs/LangRef.html#fast-math-flag *)
