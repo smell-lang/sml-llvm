@@ -63,9 +63,9 @@ val Var2 = ast.GlobalVariable {
       };
 
 val defaultModule = ast.Module {
-  		modulename = "dd", 
-  		moduleSourceFilename = "ss", 
-  		moduleDatalayout = NONE,
-  		moduleTargetTriple = NONE,
-  		moduleDefination = [ast.GlobalDefinition Var1,ast.GlobalDefinition Var2,ast.GlobalDefinition defaultFunction]
-  	  };
+        modulename = "dd", 
+        moduleSourceFilename = "ss", 
+        moduleDatalayout = NONE,
+        moduleTargetTriple = NONE,
+        moduleDefination = [ast.GlobalDefinition Var1,ast.GlobalDefinition Var2,ast.GlobalDefinition defaultFunction]
+      };
