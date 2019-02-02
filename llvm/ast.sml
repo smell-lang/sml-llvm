@@ -1,7 +1,7 @@
 (*********************************************************************************)
 
 (*                        Project : LLVM bindings for sml                        *)
-(*                        Program : llvm_ast.sml                                 *)
+(*                        Program : ast.sml                                      *)
 (*                        Author  : Rahul Dhawan                                 *)
 (*                        Purpose : To capture the AST for LLVM                  *)
 

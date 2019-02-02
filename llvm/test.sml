@@ -1,3 +1,13 @@
+(*********************************************************************************)
+
+(*                        Project : LLVM bindings for sml                        *)
+(*                        Program : test.sml                                     *)
+(*                        Author  : Rahul Dhawan                                 *)
+(*                        Purpose : To capture the AST for LLVM code             *)
+
+(*********************************************************************************)
+
+
 use "ast.sml";
 
 val outputFile = "test.ll";
