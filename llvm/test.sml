@@ -7,23 +7,25 @@ val defaultBasicblock0 = ast.BasicBlock (ast.Name "entry" , [ (ast.Named ("%sum"
 val defaultBasicblock1 = ast.BasicBlock (ast.Name "cond" , [ (ast.Named ("%sum" , ast.Mul { nsw = true, nuw = true, operand0 = ast.LocalReference (ast.IntegerType 32, ast.Name "a") , operand1 = ast.LocalReference (ast.IntegerType 32, ast.Name "b") , metadata = ast.InstructionMetadata nil } ) ) ] , ast.Do (ast.Ret { returnOperand = SOME (ast.LocalReference (ast.FloatingType (ast.HalfFP), ast.Name "sum") ), metadata = ast.InstructionMetadata nil } ) ); 
 
 
-val defaultFunction = ast.Function {linkage = ast.Private, 
-                 visibility = ast.Default,
-                 storageClass = NONE,
-                 callingConvention = ast.GHC,
-                 returnAttributes = nil,
-                 functionAttributes = nil,
-                 returnType = ast.FloatingType (ast.HalfFP),
-                 name = ast.Name "add_two_integer",
-                 parameters = ( [ast.Parameter (ast.i32, ast.Name "a", [ast.ZeroExt]), ast.Parameter (ast.i32, ast.Name "b", [ast.ZeroExt])] , true ),
-                 section = NONE,
-                 comdat = NONE,
-                 allignment = 0,
-                 garbagecollectorName = NONE,
-                 prefix = NONE,
-                 basicblock = [defaultBasicblock0 , defaultBasicblock1],
-                 personalityFunction = NONE,
-                 metadata = nil };
+val defaultFunction = ast.Function {
+        linkage = ast.Private, 
+        visibility = ast.Default,
+        storageClass = NONE,
+        callingConvention = ast.GHC,
+        returnAttributes = nil,
+        functionAttributes = nil,
+        returnType = ast.FloatingType (ast.HalfFP),
+        name = ast.Name "add_two_integer",
+        parameters = ( [ast.Parameter (ast.i32, ast.Name "a", [ast.ZeroExt]), ast.Parameter (ast.i32, ast.Name "b", [ast.ZeroExt])] , true ),
+        section = NONE,
+        comdat = NONE,
+        allignment = 0,
+        garbagecollectorName = NONE,
+        prefix = NONE,
+        basicblock = [defaultBasicblock0 , defaultBasicblock1],
+        personalityFunction = NONE,
+        metadata = nil 
+      };
 
 
 val Var1 = ast.GlobalVariable {
@@ -60,4 +62,10 @@ val Var2 = ast.GlobalVariable {
         metadata = nil
       };
 
-val defaultModule = ast.Module {modulename = "dd", moduleSourceFilename = "ss", moduleDatalayout = NONE, moduleTargetTriple = NONE, moduleDefination = [ast.GlobalDefinition Var1,ast.GlobalDefinition Var2,ast.GlobalDefinition defaultFunction]};
+val defaultModule = ast.Module {
+  		modulename = "dd", 
+  		moduleSourceFilename = "ss", 
+  		moduleDatalayout = NONE,
+  		moduleTargetTriple = NONE,
+  		moduleDefination = [ast.GlobalDefinition Var1,ast.GlobalDefinition Var2,ast.GlobalDefinition defaultFunction]
+  	  };
